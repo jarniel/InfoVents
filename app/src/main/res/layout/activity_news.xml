@@ -19,6 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/news_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#e3e3e3"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+
+
 
     </android.support.design.widget.CoordinatorLayout>
 

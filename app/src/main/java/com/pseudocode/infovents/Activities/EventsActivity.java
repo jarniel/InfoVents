@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+import com.pseudocode.infovents.Adapters.EventViewPagerAdapter;
 import com.pseudocode.infovents.Classes.User;
 import com.pseudocode.infovents.LocalStore;
 import com.pseudocode.infovents.MainActivity;
@@ -29,11 +33,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class EventsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Firebase mFirebase;
-    LocalStore mLocalstore;
+
     CircleImageView imageView;
     TextView username, useremail;
     User user;
+    TabLayout tabLayout;
+    ViewPager mPager;
+    EventViewPagerAdapter mViewPagerAdapter;
+    CharSequence titles[] ={"Upcoming", "Ongoing", "Finished"};
+    Firebase mFirebase;
+    LocalStore mLocalstore;
+    int numTabs = 3;
+    CollapsingToolbarLayout collapsingToolbarLayout;
     private static final int NAVDRAWER_LAUNCH_DELAY = 230;
 
     Handler mHandler;
@@ -44,7 +55,7 @@ public class EventsActivity extends AppCompatActivity
         setContentView(R.layout.activity_events);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
 
 
         Firebase.setAndroidContext(this);
@@ -77,6 +88,13 @@ public class EventsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         mHandler = new Handler();
         navigationView.setCheckedItem(R.id.nav_events);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mViewPagerAdapter = new EventViewPagerAdapter(getSupportFragmentManager(), titles, numTabs);
+        mPager = (ViewPager) findViewById(R.id.eventPager);
+        mPager.setAdapter(mViewPagerAdapter);
+        tabLayout.setupWithViewPager(mPager);
+
     }
 
     @Override

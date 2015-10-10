@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +20,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+import com.pseudocode.infovents.Adapters.EventViewPagerAdapter;
+import com.pseudocode.infovents.Adapters.OrganizationViewPagerAdapter;
 import com.pseudocode.infovents.Classes.User;
 import com.pseudocode.infovents.LocalStore;
 import com.pseudocode.infovents.MainActivity;
@@ -35,6 +39,12 @@ public class UserOrganizationActivity extends AppCompatActivity
     TextView username, useremail;
     User user;
     private static final int NAVDRAWER_LAUNCH_DELAY = 230;
+    TabLayout tabLayout;
+    ViewPager mPager;
+    OrganizationViewPagerAdapter mViewPagerAdapter;
+    CharSequence titles[] ={"Joined", "Owned"};
+    int numTabs = 2;
+
 
     Handler mHandler;
 
@@ -76,8 +86,23 @@ public class UserOrganizationActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mViewPagerAdapter = new OrganizationViewPagerAdapter(getSupportFragmentManager(), titles, numTabs);
+        mPager = (ViewPager) findViewById(R.id.eventPager);
+        mPager.setAdapter(mViewPagerAdapter);
+        tabLayout.setupWithViewPager(mPager);
+
         mHandler = new Handler();
         navigationView.setCheckedItem(R.id.nav_my_org);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserOrganizationActivity.this, CreateOrganizationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -218,5 +243,11 @@ public class UserOrganizationActivity extends AppCompatActivity
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 }

@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,24 +20,37 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.pseudocode.infovents.Adapters.OrganizationAdapter;
+import com.pseudocode.infovents.Classes.Organization;
 import com.pseudocode.infovents.Classes.User;
 import com.pseudocode.infovents.LocalStore;
 import com.pseudocode.infovents.MainActivity;
 import com.pseudocode.infovents.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class OrganizationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Firebase mFirebase;
     LocalStore mLocalstore;
     CircleImageView imageView;
     TextView username, useremail;
     User user;
+    RecyclerView mRecyclerView;
+    Firebase mFirebase;
+    OrganizationAdapter mAdapter;
+    List<Organization> mOrg = new ArrayList<>();
+
     private static final int NAVDRAWER_LAUNCH_DELAY = 230;
 
     Handler mHandler;
@@ -46,7 +63,6 @@ public class OrganizationActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-
         Firebase.setAndroidContext(this);
         mFirebase = new Firebase(getResources().getString(R.string.firebaseRef));
 
@@ -56,7 +72,7 @@ public class OrganizationActivity extends AppCompatActivity
 
         mLocalstore = new LocalStore(this);
 
-        if(authenticate()){
+        if (authenticate()) {
             user = mLocalstore.getLoggedInUser();
             username.setText(user.getName());
             useremail.setText(user.getEmail());
@@ -77,6 +93,52 @@ public class OrganizationActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         mHandler = new Handler();
         navigationView.setCheckedItem(R.id.nav_organizations);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.org_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(OrganizationActivity.this));
+
+        mAdapter = new OrganizationAdapter(OrganizationActivity.this, mOrg);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        Firebase.setAndroidContext(OrganizationActivity.this);
+        mFirebase = new Firebase(getResources().getString(R.string.firebaseRef)).child("organizations");
+        mFirebase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+                    Log.d("Firebase", dataSnapshot.getValue().toString());
+
+                    Organization model = dataSnapshot.getValue(Organization.class);
+                    mOrg.add(model);
+                    mRecyclerView.scrollToPosition(mOrg.size() - 1);
+                    mAdapter.notifyItemInserted(mOrg.size() - 1);
+
+                }
+            }
+
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -192,7 +254,7 @@ public class OrganizationActivity extends AppCompatActivity
                     startActivity(intent);
                 }
             }, NAVDRAWER_LAUNCH_DELAY);
-        } else if (id == R.id.nav_logout){
+        } else if (id == R.id.nav_logout) {
             mFirebase.unauth();
             mLocalstore.clearUserData();
             mLocalstore.setUserLoggedIn(false);
@@ -202,14 +264,13 @@ public class OrganizationActivity extends AppCompatActivity
         }
 
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
 
-    private boolean authenticate(){
+    private boolean authenticate() {
         if (mLocalstore.getLoggedInUser() == null) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);

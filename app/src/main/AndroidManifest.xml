@@ -76,6 +76,15 @@
             android:name=".Activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name=".Activities.CreateOrganizationActivity"
+            android:label="@string/title_activity_create_organization"
+            android:theme="@style/AppTheme"
+            android:parentActivityName="com.pseudocode.infovents.Activities.UserOrganizationActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pseudocode.infovents.Activities.UserOrganizationActivity" />
+        </activity>
     </application>
 
 </manifest>

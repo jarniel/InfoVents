@@ -1,0 +1,93 @@
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="10dp"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="1dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/relay"
+            android:layout_width="match_parent"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:background="#fff"
+                android:padding="2dp"
+                android:src="@drawable/ic_account_box_24dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_toRightOf="@+id/thumbnail"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/news"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:text="Pseudocode"
+                    android:textColor="#222"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/posted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:paddingLeft="8dp"
+                    android:text="Poster"
+                    android:textColor="#222"
+                        android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/datePosted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:paddingLeft="8dp"
+                    android:text="Date Posted "
+                    android:textColor="#222"
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/newsdesc"
+            android:layout_below="@id/relay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:paddingLeft="16dp"
+            android:paddingBottom="16dp"
+            android:paddingRight="16dp"
+            android:text="lorem"
+            android:textColor="#222"
+            android:textSize="15dp" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
