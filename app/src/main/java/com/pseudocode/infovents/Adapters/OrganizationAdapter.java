@@ -1,6 +1,7 @@
 package com.pseudocode.infovents.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pseudocode.infovents.Activities.ViewOrganizationActivity;
 import com.pseudocode.infovents.Classes.Organization;
 import com.pseudocode.infovents.R;
 import com.squareup.picasso.Picasso;
@@ -95,8 +97,10 @@ public class OrganizationAdapter extends RecyclerView.Adapter<OrganizationAdapte
         public void onClick(View view) {
             CustomViewHolder holder = (CustomViewHolder) view.getTag();
             int position = holder.getAdapterPosition();
-
             Organization organization = mDataset.get(position);
+
+            Intent intent = new Intent(mContext, ViewOrganizationActivity.class);
+            mContext.startActivity(intent);
 
         }
     };

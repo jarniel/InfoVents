@@ -87,4 +87,5 @@
         <item>New Zealand</item>
         <item>India</item>
     </string-array>
+    <string name="title_activity_view_organization">ViewOrganizationActivity</string>
 </resources>

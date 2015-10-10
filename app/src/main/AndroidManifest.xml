@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
-        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -79,11 +78,18 @@
         <activity
             android:name=".Activities.CreateOrganizationActivity"
             android:label="@string/title_activity_create_organization"
-            android:theme="@style/AppTheme"
-            android:parentActivityName="com.pseudocode.infovents.Activities.UserOrganizationActivity" >
+            android:parentActivityName=".Activities.UserOrganizationActivity"
+            android:theme="@style/AppTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pseudocode.infovents.Activities.UserOrganizationActivity" />
+        </activity>
+        <activity
+            android:name=".Activities.ViewOrganizationActivity"
+            android:label="@string/title_activity_view_organization"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity android:name=".Activities.CreateEventActivity" >
         </activity>
     </application>
 

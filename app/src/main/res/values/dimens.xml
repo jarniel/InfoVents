@@ -12,4 +12,5 @@
     <dimen name="fb_margin_override_lr">10dp</dimen>
     <!--The next value changes the margin between the FB icon and the login text:-->
     <dimen name="fb_margin_override_textpadding">17dp</dimen>
+    <dimen name="app_bar_height">192dp</dimen>
 </resources>

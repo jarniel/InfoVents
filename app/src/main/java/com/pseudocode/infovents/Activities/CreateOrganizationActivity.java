@@ -1,5 +1,6 @@
 package com.pseudocode.infovents.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.pseudocode.infovents.Classes.User;
 import com.pseudocode.infovents.LocalStore;
 import com.pseudocode.infovents.R;
@@ -86,7 +88,6 @@ public class CreateOrganizationActivity extends AppCompatActivity implements Vie
                 mOrgOwner = mUser.getId();
 
                 Firebase ref = mFirebaseRef.child("organizations");
-
                 Map<String, String> post = new HashMap<String, String>();
                 post.put("orgName", mOrgName);
                 post.put("orgDesc", mOrgDesc);
@@ -101,7 +102,18 @@ public class CreateOrganizationActivity extends AppCompatActivity implements Vie
                 post.put("orgMembers", mOrgMembers);
                 post.put("dateCreated", mDateCreated);
 
-                ref.push().setValue(post);
+                ref.push().setValue(post, new Firebase.CompletionListener() {
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                        if (firebaseError != null) {
+                            Toast.makeText(CreateOrganizationActivity.this, firebaseError + "", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(CreateOrganizationActivity.this, "Organization Created Successfully", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(CreateOrganizationActivity.this, UserOrganizationActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
                 break;
         }
     }
